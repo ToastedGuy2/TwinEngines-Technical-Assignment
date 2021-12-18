@@ -16,7 +16,7 @@ namespace server.Entities
         public string Name { get; set; }
         [Required]
         public int TypeId { get; set; }
-        public Type Type { get; set; }
+        public CustomerType Type { get; set; }
         [Required]
         public DateTime ContractDate { get; set; }
         [Required]

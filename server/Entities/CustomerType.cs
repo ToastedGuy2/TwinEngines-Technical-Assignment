@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 namespace server.Entities
 {
     [Table("Type")]
-    public class Type
+    public class CustomerType
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        public int CustomerId { get; set; }
+        public string Name { get; set; }
         public ICollection<Customer> Customers { get; set; }
     }
 }
