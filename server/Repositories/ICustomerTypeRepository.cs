@@ -9,5 +9,7 @@ namespace Repositories
     public interface ICustomerTypeRepository
     {
         Task<IEnumerable<CustomerType>> GetAllAsync();
+        Task<CustomerType> GetByIdAsync(int id);
+
     }
 }

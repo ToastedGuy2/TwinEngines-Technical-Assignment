@@ -18,5 +18,10 @@ namespace Services
         {
             return await _repository.GetAllAsync();
         }
+
+        public async Task<CustomerType> GetByIdAsync(int id)
+        {
+            return await _repository.GetByIdAsync(id);
+        }
     }
 }

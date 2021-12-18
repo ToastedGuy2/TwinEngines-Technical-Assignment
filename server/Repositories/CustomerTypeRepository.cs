@@ -21,5 +21,10 @@ namespace Repositories
         {
             return await _db.Types.ToListAsync();
         }
+
+        public async Task<CustomerType> GetByIdAsync(int id)
+        {
+            return await _db.Types.FindAsync(id);
+        }
     }
 }

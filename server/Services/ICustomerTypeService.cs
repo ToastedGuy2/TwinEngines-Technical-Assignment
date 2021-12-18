@@ -9,5 +9,7 @@ namespace Services
     public interface ICustomerTypeService
     {
         Task<IEnumerable<CustomerType>> GetAllAsync();
+        Task<CustomerType> GetByIdAsync(int id);
+
     }
 }
