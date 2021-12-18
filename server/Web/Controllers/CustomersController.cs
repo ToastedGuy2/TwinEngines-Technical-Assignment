@@ -14,19 +14,21 @@ namespace Web.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly ICustomerService _service;
+        private readonly ICustomerService _customerService;
+        private readonly ICustomerTypeService _typeService;
         private readonly IMapper _mapper;
 
-        public CustomersController(ICustomerService service, IMapper mapper)
+        public CustomersController(ICustomerService customerService, ICustomerTypeService typeService, IMapper mapper)
         {
-            this._service = service ?? throw new ArgumentNullException(nameof(service));
+            this._customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            this._typeService = typeService ?? throw new ArgumentNullException(nameof(typeService));
             this._mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetCustomers()
         {
-            var customers = await _service.GetAllAsync();
+            var customers = await _customerService.GetAllAsync();
             var response = _mapper.Map<IEnumerable<CustomerDTO>>(customers);
             return Ok(response);
         }
@@ -34,7 +36,7 @@ namespace Web.Controllers
         [HttpGet("{id}", Name = "GetCustomerById")]
         public async Task<ActionResult<CustomerDTO>> GetCustomerById(int id)
         {
-            var customer = await _service.GetByIdAsync(id);
+            var customer = await _customerService.GetByIdAsync(id);
             if (customer == null)
             {
                 return NotFound();
@@ -48,9 +50,9 @@ namespace Web.Controllers
         public async Task<ActionResult<CustomerDTO>> PostCustomer(CustomerForCreationDTO model)
         {
             var customer = _mapper.Map<Customer>(model);
-            await _service.InsertAsync(customer);
-            await _service.SaveChangesAsync();
-            // TODO: ADD Customer
+            await _customerService.InsertAsync(customer);
+            await _customerService.SaveChangesAsync();
+            customer.Type = await _typeService.GetByIdAsync(customer.TypeId);
             var response = _mapper.Map<CustomerDTO>(customer);
             return CreatedAtRoute("GetCustomerById", new { id = response.Id }, response);
         }
