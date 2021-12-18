@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using server.Entities;
 using server.Repositories.context;
 
@@ -14,9 +15,11 @@ namespace Repositories
         {
             this._db = db ?? throw new ArgumentNullException(nameof(db));
         }
-        public IEnumerable<CustomerType> GetAll()
+
+
+        public async Task<IEnumerable<CustomerType>> GetAllAsync()
         {
-            return _db.Types;
+            return await _db.Types.ToListAsync();
         }
     }
 }

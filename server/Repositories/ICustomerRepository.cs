@@ -8,10 +8,10 @@ namespace Repositories
 {
     public interface ICustomerRepository
     {
-        IEnumerable<Customer> GetAll();
-        Customer GetById(int id);
-        void Insert(Customer customer);
+        Task<IEnumerable<Customer>> GetAllAsync();
+        Task<Customer> GetByIdAsync(int id);
+        Task InsertAsync(Customer customer);
         void Update(Customer customer);
-        void Save();
+        Task SaveChangesAsync();
     }
 }

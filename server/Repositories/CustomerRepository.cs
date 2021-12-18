@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using server.Entities;
 using server.Repositories.context;
 
@@ -15,23 +16,25 @@ namespace Repositories
             this._db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public IEnumerable<Customer> GetAll()
+        public async Task<IEnumerable<Customer>> GetAllAsync()
         {
-            return _db.Customers;
+            return await _db.Customers.Include(c => c.Type).ToListAsync();
         }
 
-        public Customer GetById(int id)
+        public async Task<Customer> GetByIdAsync(int id)
         {
-            return _db.Customers.Find(id);
+            return await _db.Customers.Include(c => c.Type)
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
         }
 
-        public void Insert(Customer customer)
+        public async Task InsertAsync(Customer customer)
         {
             if (customer == null)
             {
                 throw new ArgumentNullException(nameof(customer));
             }
-            _db.Customers.Add(customer);
+            await _db.Customers.AddAsync(customer);
         }
 
 
@@ -43,9 +46,9 @@ namespace Repositories
             }
             _db.Customers.Update(customer);
         }
-        public void Save()
+        public async Task SaveChangesAsync()
         {
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 }
