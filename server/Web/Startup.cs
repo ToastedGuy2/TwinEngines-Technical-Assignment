@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Repositories;
 using server.Repositories.context;
+using Services;
+using AutoMapper;
 
 namespace Web
 {
@@ -32,6 +36,11 @@ namespace Web
             services.AddControllers();
             services.AddDbContextPool<TwinEnginesDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("Standard")));
+            services.AddScoped<ICustomerTypeRepository, CustomerTypeRepository>();
+            services.AddScoped<ICustomerTypeService, CustomerTypeService>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

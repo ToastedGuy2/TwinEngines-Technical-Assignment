@@ -9,7 +9,7 @@ namespace Services
 {
     public class CustomerService : ICustomerService
     {
-        private ICustomerRepository _repository;
+        private readonly ICustomerRepository _repository;
         public CustomerService(ICustomerRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));

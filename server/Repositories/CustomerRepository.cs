@@ -10,7 +10,7 @@ namespace Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private TwinEnginesDbContext _db;
+        private readonly TwinEnginesDbContext _db;
         public CustomerRepository(TwinEnginesDbContext db)
         {
             this._db = db ?? throw new ArgumentNullException(nameof(db));
@@ -34,6 +34,7 @@ namespace Repositories
             {
                 throw new ArgumentNullException(nameof(customer));
             }
+            customer.IsItActive = true;
             await _db.Customers.AddAsync(customer);
         }
 
