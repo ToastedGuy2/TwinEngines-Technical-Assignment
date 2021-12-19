@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using server.Entities;
 using Services;
@@ -25,6 +26,7 @@ namespace Web.Controllers
             this._mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        [EnableCors("_myAllowSpecificOrigins")]
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetCustomers()
         {
@@ -33,6 +35,7 @@ namespace Web.Controllers
             return Ok(response);
         }
 
+        [EnableCors(PolicyName = "_myAllowSpecificOrigins")]
         [HttpGet("{id}", Name = "GetCustomerById")]
         public async Task<ActionResult<CustomerDTO>> GetCustomerById(int id)
         {
@@ -46,6 +49,7 @@ namespace Web.Controllers
             return Ok(response);
         }
 
+        [EnableCors("_myAllowSpecificOrigins")]
         [HttpPost("")]
         public async Task<ActionResult<CustomerDTO>> PostCustomer(CustomerForCreationDTO model)
         {
@@ -56,6 +60,7 @@ namespace Web.Controllers
             return CreatedAtRoute("GetCustomerById", new { id = response.Id }, response);
         }
 
+        [EnableCors("_myAllowSpecificOrigins")]
         [HttpPatch("{id}")]
         public async Task<ActionResult<CustomerDTO>> PatchCustomer(int id, CustomerForCreationDTO model)
         {
@@ -74,6 +79,7 @@ namespace Web.Controllers
             return Ok(response);
         }
 
+        [EnableCors("_myAllowSpecificOrigins")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Customer>> DeleteCustomerById(int id)
         {
