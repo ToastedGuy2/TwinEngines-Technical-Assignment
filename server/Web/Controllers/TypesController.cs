@@ -9,7 +9,6 @@ using Services;
 
 namespace Web.Controllers
 {
-    [EnableCors("_myAllowSpecificOrigins")]
     [ApiController]
     [Route("api/[controller]")]
     public class TypesController : ControllerBase

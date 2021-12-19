@@ -26,7 +26,6 @@ namespace Web.Controllers
             this._mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [EnableCors("_myAllowSpecificOrigins")]
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetCustomers()
         {
@@ -49,7 +48,6 @@ namespace Web.Controllers
             return Ok(response);
         }
 
-        [EnableCors("_myAllowSpecificOrigins")]
         [HttpPost("")]
         public async Task<ActionResult<CustomerDTO>> PostCustomer(CustomerForCreationDTO model)
         {
@@ -60,7 +58,6 @@ namespace Web.Controllers
             return CreatedAtRoute("GetCustomerById", new { id = response.Id }, response);
         }
 
-        [EnableCors("_myAllowSpecificOrigins")]
         [HttpPatch("{id}")]
         public async Task<ActionResult<CustomerDTO>> PatchCustomer(int id, CustomerForCreationDTO model)
         {
@@ -79,7 +76,6 @@ namespace Web.Controllers
             return Ok(response);
         }
 
-        [EnableCors("_myAllowSpecificOrigins")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Customer>> DeleteCustomerById(int id)
         {
