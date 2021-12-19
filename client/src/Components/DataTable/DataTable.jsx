@@ -5,6 +5,7 @@ import Formatter from "../../Helpers/currencyFormatter";
 import { Box, Button, Typography } from "@mui/material";
 import { AddCircle, Edit, Delete, Person, Badge } from "@mui/icons-material";
 import Tooltip from "@mui/material/Tooltip";
+import red from "@mui/material/colors/red";
 import useStyles from "./style";
 function DataTable({ isEditDisable, isDeleteDisable }) {
   const classes = useStyles();
@@ -19,6 +20,7 @@ function DataTable({ isEditDisable, isDeleteDisable }) {
           variant="contained"
           color="primary"
           className={classes.toolbar_button}
+          href="/add"
         >
           Add
         </Button>
@@ -117,6 +119,40 @@ const columns = [
     valueFormatter: (params) => {
       return DateTime.fromJSDate(params.value).toLocaleString(
         DateTime.DATETIME_MED
+      );
+    },
+  },
+  {
+    field: "id",
+    headerName: "Actions",
+    width: 200,
+    renderCell: (params) => {
+      const link = `/edit/${params.value}`;
+      return (
+        <>
+          <Button
+            startIcon={<Edit />}
+            variant="contained"
+            color="secondary"
+            href={link}
+          >
+            Edit
+          </Button>
+          <Button
+            startIcon={<Delete />}
+            variant="contained"
+            style={{
+              marginLeft: "8px",
+              backgroundColor: red[700],
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: red[900],
+              },
+            }}
+          >
+            Delete
+          </Button>
+        </>
       );
     },
   },

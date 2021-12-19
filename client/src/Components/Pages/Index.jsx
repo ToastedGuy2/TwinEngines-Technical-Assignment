@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "axios";
 import { customersApiUrl } from "../../apiUrls";
 import Typography from "@mui/material/Typography";
