@@ -51,28 +51,39 @@ namespace Web.Controllers
         {
             var customer = _mapper.Map<Customer>(model);
             await _customerService.InsertAsync(customer);
-            await _customerService.SaveChangesAsync();
             customer.Type = await _typeService.GetByIdAsync(customer.TypeId);
             var response = _mapper.Map<CustomerDTO>(customer);
             return CreatedAtRoute("GetCustomerById", new { id = response.Id }, response);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(int id, Customer model)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<CustomerDTO>> PatchCustomer(int id, CustomerForCreationDTO model)
         {
-            // TODO: Your code here
-            await Task.Yield();
-
-            return NoContent();
+            var customer = await _customerService.GetByIdAsync(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            customer.Name = model.Name;
+            customer.TypeId = model.TypeId;
+            customer.ContractDate = model.ContractDate;
+            customer.CreditLimit = model.CreditLimit;
+            await _customerService.UpdateAsync(customer);
+            customer.Type = await _typeService.GetByIdAsync(customer.TypeId);
+            var response = _mapper.Map<CustomerDTO>(customer);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Customer>> DeleteCustomerById(int id)
         {
-            // TODO: Your code here
-            await Task.Yield();
-
-            return null;
+            var customer = await _customerService.GetByIdAsync(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            await _customerService.DeleteAsync(customer);
+            return Ok();
         }
     }
 }

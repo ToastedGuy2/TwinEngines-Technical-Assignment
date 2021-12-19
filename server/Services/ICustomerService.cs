@@ -12,6 +12,6 @@ namespace Services
         Task<Customer> GetByIdAsync(int id);
         Task InsertAsync(Customer customer);
         Task UpdateAsync(Customer customer);
-        Task SaveChangesAsync();
+        Task DeleteAsync(Customer customer);
     }
 }

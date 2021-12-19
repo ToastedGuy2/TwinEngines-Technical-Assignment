@@ -18,13 +18,13 @@ namespace Repositories
 
         public async Task<IEnumerable<Customer>> GetAllAsync()
         {
-            return await _db.Customers.Include(c => c.Type).ToListAsync();
+            return await _db.Customers.Include(c => c.Type).Where(c => c.IsItActive).ToListAsync();
         }
 
         public async Task<Customer> GetByIdAsync(int id)
         {
             return await _db.Customers.Include(c => c.Type)
-                .Where(c => c.Id == id)
+                .Where(c => c.Id == id && c.IsItActive)
                 .FirstOrDefaultAsync();
         }
 

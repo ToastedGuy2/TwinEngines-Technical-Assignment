@@ -14,6 +14,8 @@ namespace Services
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
+
+
         public async Task<IEnumerable<Customer>> GetAllAsync()
         {
             return await _repository.GetAllAsync();
@@ -33,14 +35,14 @@ namespace Services
 
         public async Task UpdateAsync(Customer customer)
         {
-            customer.IsItActive = false;
-            customer.DeletedDate = DateTime.Now;
             _repository.Update(customer);
             await _repository.SaveChangesAsync();
         }
-
-        public async Task SaveChangesAsync()
+        public async Task DeleteAsync(Customer customer)
         {
+            customer.IsItActive = false;
+            customer.DeletedDate = DateTime.Now;
+            _repository.Update(customer);
             await _repository.SaveChangesAsync();
         }
     }
