@@ -76,7 +76,7 @@ function Index() {
   }
   return (
     <Container maxWidth="lg">
-      <Box sx={{ textAlign: "center" }}>
+      <Box sx={{ textAlign: "center", marginY: "24px" }}>
         <Typography variant="h2" color="primary" component="span">
           Twin
         </Typography>
