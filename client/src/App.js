@@ -23,7 +23,7 @@ export default function App() {
           path="/edit/:id"
           element={
             <LocalizationProvider dateAdapter={AdapterLuxon}>
-              {/* <Edit /> */}
+              <Edit />
             </LocalizationProvider>
           }
         />

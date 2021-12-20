@@ -41,7 +41,7 @@ function Index() {
     setWasOperationSuccess(false);
   }
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="lg">
       <Box sx={{ textAlign: "center" }}>
         <Typography variant="h2" color="primary" component="span">
           Twin

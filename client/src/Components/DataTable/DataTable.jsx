@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DateTime } from "luxon";
 import Formatter from "../../Helpers/currencyFormatter";
 import { Box, Button, Typography } from "@mui/material";
-import { AddCircle, Edit, Delete, Person, Badge } from "@mui/icons-material";
+import { AddCircle, Edit, Delete, Lightbulb } from "@mui/icons-material";
 import Tooltip from "@mui/material/Tooltip";
 import red from "@mui/material/colors/red";
 import useStyles from "./style";
@@ -50,8 +50,15 @@ export default function TransactionTable({ customers }) {
   const [selectedRows, setSelectedRows] = useState([]);
   const classes = useStyles();
   const rows = customers.map((customer) => {
-    const { id, type, name, creditLimit, contractDate } = customer;
-    return createRowData(id, type, name, creditLimit, contractDate);
+    const { id, type, name, creditLimit, contractDate, isActive } = customer;
+    return createRowData(
+      isActive,
+      name,
+      type.name,
+      creditLimit,
+      contractDate,
+      id
+    );
   });
   return (
     <Box className={classes.container}>
@@ -61,7 +68,7 @@ export default function TransactionTable({ customers }) {
             rows={rows}
             columns={columns}
             pageSize={5}
-            checkboxSelection
+            // checkboxSelection
             components={{
               Toolbar: DataTable,
             }}
@@ -84,18 +91,18 @@ export default function TransactionTable({ customers }) {
 
 const columns = [
   {
-    field: "type",
-    headerName: "Type",
-    width: 125,
-    description: "Cliente o Prospecto",
+    field: "isActive",
+    headerName: "Status",
+    width: 100,
+    description: "Active or Inactive",
     renderCell: (params) =>
-      params.value.name === "Cliente" ? (
-        <Tooltip title="Cliente">
-          <Person color="primary" />
+      params.value ? (
+        <Tooltip title="Active">
+          <Lightbulb style={{ color: "#ffd60a" }} />
         </Tooltip>
       ) : (
-        <Tooltip title="Prospecto">
-          <Badge color="secondary" />
+        <Tooltip title="Inactive">
+          <Lightbulb />
         </Tooltip>
       ),
   },
@@ -103,6 +110,12 @@ const columns = [
     field: "name",
     headerName: "Name",
     width: 250,
+  },
+  {
+    field: "type",
+    headerName: "Type",
+    width: 150,
+    description: "Cliente or Prospecto",
   },
   {
     field: "creditLimit",
@@ -157,10 +170,18 @@ const columns = [
     },
   },
 ];
-const createRowData = (id, type, name, creditLimit, contractDate) => ({
-  id,
-  type,
+const createRowData = (
+  isActive,
   name,
+  type,
+  creditLimit,
+  contractDate,
+  id
+) => ({
+  isActive,
+  name,
+  type,
   creditLimit,
   contractDate: new Date(contractDate),
+  id,
 });
