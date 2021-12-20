@@ -13,5 +13,6 @@ namespace Web.Models
         public CustomerType Type { get; set; }
         public DateTime ContractDate { get; set; }
         public Decimal CreditLimit { get; set; }
+        public bool IsActive { get; set; }
     }
 }

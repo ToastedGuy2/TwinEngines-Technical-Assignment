@@ -40,7 +40,7 @@ namespace Services
         }
         public async Task DeleteAsync(Customer customer)
         {
-            customer.IsItActive = false;
+            customer.IsActive = false;
             customer.DeletedDate = DateTime.Now;
             _repository.Update(customer);
             await _repository.SaveChangesAsync();

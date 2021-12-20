@@ -37,7 +37,7 @@ namespace server.Repositories.context
                 TypeId = 1,
                 ContractDate = DateTime.Now,
                 CreditLimit = r.Next(500, 2500),
-                IsItActive = true
+                IsActive = true,
             },
             new Customer()
             {
@@ -46,7 +46,7 @@ namespace server.Repositories.context
                 TypeId = 2,
                 ContractDate = DateTime.Now,
                 CreditLimit = r.Next(500, 2500),
-                IsItActive = true
+                IsActive = true,
             },
             new Customer()
             {
@@ -55,7 +55,7 @@ namespace server.Repositories.context
                 TypeId = 1,
                 ContractDate = DateTime.Now,
                 CreditLimit = r.Next(500, 2500),
-                IsItActive = true
+                IsActive = true,
             },
             new Customer()
             {
@@ -64,7 +64,7 @@ namespace server.Repositories.context
                 TypeId = 2,
                 ContractDate = DateTime.Now,
                 CreditLimit = r.Next(500, 2500),
-                IsItActive = true
+                IsActive = true,
             },
             new Customer()
             {
@@ -73,7 +73,7 @@ namespace server.Repositories.context
                 TypeId = 2,
                 ContractDate = DateTime.Now,
                 CreditLimit = r.Next(500, 2500),
-                IsItActive = true
+                IsActive = true,
             });
         }
     }

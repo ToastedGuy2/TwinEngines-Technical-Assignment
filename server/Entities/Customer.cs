@@ -22,7 +22,7 @@ namespace server.Entities
         [Required]
         public Decimal CreditLimit { get; set; }
         [Required]
-        public bool IsItActive { get; set; }
+        public bool IsActive { get; set; }
         public DateTime DeletedDate { get; set; }
 
     }
