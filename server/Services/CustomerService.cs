@@ -28,6 +28,7 @@ namespace Services
 
         public async Task InsertAsync(Customer customer)
         {
+            customer.IsActive = true;
             await _repository.InsertAsync(customer);
             await _repository.SaveChangesAsync();
         }

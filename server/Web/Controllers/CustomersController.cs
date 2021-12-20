@@ -66,10 +66,13 @@ namespace Web.Controllers
             {
                 return NotFound();
             }
+            // customer = _mapper.Map<Customer>(model);
+            // customer.Id = id;
             customer.Name = model.Name;
             customer.TypeId = model.TypeId;
             customer.ContractDate = model.ContractDate;
             customer.CreditLimit = model.CreditLimit;
+            customer.IsActive = model.isActive;
             await _customerService.UpdateAsync(customer);
             customer.Type = await _typeService.GetByIdAsync(customer.TypeId);
             var response = _mapper.Map<CustomerDTO>(customer);
