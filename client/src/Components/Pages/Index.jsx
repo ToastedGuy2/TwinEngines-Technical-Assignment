@@ -11,20 +11,54 @@ import Container from "@mui/material/Container";
 import DataTable from "../DataTable/DataTable.jsx";
 function Index() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isTryingToDelete, setIsTryingToDelete] = useState(false);
+  const [isDeletingCustomer, setIsDeletingCustomer] = useState(false);
+  const [idCustomerSelected, setIdCustomerSelected] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [wasOperationSuccess, setWasOperationSuccess] = useState(
     Cookies.get("wasOperationSuccess") ? true : false
   );
+  const onDeleteBtnClick = (customerId) => {
+    console.log(customerId);
+    setIdCustomerSelected(customerId);
+    setIsTryingToDelete(true);
+  };
   const fetchCustomers = async () => {
     const customers = await axios.get(customersApiUrl);
     setCustomers(customers.data);
     setIsLoading(false);
   };
+  const showConfirmationDialog = async () => {
+    const customer = customers.find((c) => c.id === idCustomerSelected);
+    const didHePressOk = await swal({
+      title: "Are you sure you want to delete this customer?",
+      text: customer.name,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    });
+    setIsTryingToDelete(false);
+    setIsDeletingCustomer(didHePressOk ? didHePressOk : false);
+  };
+  const deleteCustomer = async () => {
+    await axios.delete(`${customersApiUrl}/${idCustomerSelected}`);
+    setIsLoading(true);
+    setIsDeletingCustomer(false);
+    setWasOperationSuccess(true);
+  };
   useEffect(() => {
-    fetchCustomers();
-  }, []);
+    if (isLoading) {
+      fetchCustomers();
+    }
+    if (isTryingToDelete) {
+      showConfirmationDialog();
+    }
+    if (isDeletingCustomer) {
+      deleteCustomer();
+    }
+  }, [isLoading, isTryingToDelete, isDeletingCustomer]);
 
-  if (isLoading) {
+  if (isLoading || isDeletingCustomer) {
     return (
       <CenterContainer bgColor="#FCEFF9">
         <CircularProgress />
@@ -50,7 +84,7 @@ function Index() {
           Engines
         </Typography>
       </Box>
-      <DataTable customers={customers} />
+      <DataTable customers={customers} onClickHandle={onDeleteBtnClick} />
     </Container>
   );
 }

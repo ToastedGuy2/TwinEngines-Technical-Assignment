@@ -7,7 +7,7 @@ import { AddCircle, Edit, Delete, Lightbulb } from "@mui/icons-material";
 import Tooltip from "@mui/material/Tooltip";
 import red from "@mui/material/colors/red";
 import useStyles from "./style";
-function DataTable({ isEditDisable, isDeleteDisable }) {
+function DataTable({ isDeleteDisable, idCustomerSelected, onClickHandle }) {
   const classes = useStyles();
   return (
     <Box className={classes.toolbar}>
@@ -25,19 +25,13 @@ function DataTable({ isEditDisable, isDeleteDisable }) {
           Add
         </Button>
         <Button
-          startIcon={<Edit />}
-          variant="contained"
-          color="secondary"
-          className={classes.toolbar_button}
-          disabled={isEditDisable}
-        >
-          Edit
-        </Button>
-        <Button
           startIcon={<Delete />}
           variant="contained"
           className={`${classes.toolbar_button} ${classes.danger_btn}`}
           disabled={isDeleteDisable}
+          onClick={() => {
+            onClickHandle(idCustomerSelected);
+          }}
         >
           Delete
         </Button>
@@ -46,7 +40,7 @@ function DataTable({ isEditDisable, isDeleteDisable }) {
   );
 }
 
-export default function TransactionTable({ customers }) {
+export default function TransactionTable({ customers, onClickHandle }) {
   const [selectedRows, setSelectedRows] = useState([]);
   const classes = useStyles();
   const rows = customers.map((customer) => {
@@ -68,7 +62,7 @@ export default function TransactionTable({ customers }) {
             rows={rows}
             columns={columns}
             pageSize={5}
-            // checkboxSelection
+            checkboxSelection
             components={{
               Toolbar: DataTable,
             }}
@@ -77,9 +71,11 @@ export default function TransactionTable({ customers }) {
             }}
             componentsProps={{
               toolbar: {
-                isEditDisable:
-                  selectedRows.length < 1 || selectedRows.length > 1,
-                isDeleteDisable: selectedRows.length <= 0,
+                isDeleteDisable:
+                  selectedRows.length <= 0 || selectedRows.length >= 2,
+                onClickHandle,
+                idCustomerSelected:
+                  selectedRows.length > 0 ? selectedRows[0] : null,
               },
             }}
           />
@@ -150,20 +146,6 @@ const columns = [
             href={link}
           >
             Edit
-          </Button>
-          <Button
-            startIcon={<Delete />}
-            variant="contained"
-            style={{
-              marginLeft: "8px",
-              backgroundColor: red[700],
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: red[900],
-              },
-            }}
-          >
-            Delete
           </Button>
         </>
       );
