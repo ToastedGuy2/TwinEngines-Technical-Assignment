@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
+import swal from "sweetalert";
 import { customersApiUrl } from "../../apiUrls";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -10,6 +12,9 @@ import DataTable from "../DataTable/DataTable.jsx";
 function Index() {
   const [isLoading, setIsLoading] = useState(true);
   const [customers, setCustomers] = useState([]);
+  const [wasOperationSuccess, setWasOperationSuccess] = useState(
+    Cookies.get("wasOperationSuccess") ? true : false
+  );
   const fetchCustomers = async () => {
     const customers = await axios.get(customersApiUrl);
     setCustomers(customers.data);
@@ -25,6 +30,15 @@ function Index() {
         <CircularProgress />
       </CenterContainer>
     );
+  }
+  if (wasOperationSuccess) {
+    Cookies.remove("wasOperationSuccess");
+    swal({
+      title: "Operation Complete",
+      text: "Changes commited successfully.",
+      icon: "success",
+    });
+    setWasOperationSuccess(false);
   }
   return (
     <Container maxWidth="md">
