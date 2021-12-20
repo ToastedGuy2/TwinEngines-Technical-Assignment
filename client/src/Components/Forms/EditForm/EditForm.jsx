@@ -81,7 +81,7 @@ export default function EditForm({ login }) {
   };
   const fetchCustomer = async () => {
     try {
-      const { data } = await axios.get(`${typesApiUrl}/${id}`);
+      const { data } = await axios.get(`${customersApiUrl}/${id}`);
       setNameInput({
         value: data.name,
         error: {
@@ -105,6 +105,7 @@ export default function EditForm({ login }) {
         },
       });
       setIsActive(data.isActive);
+      setIsFetchingCustomer(false);
     } catch (error) {
       displayAlertError(
         "Oops something went wrong on our servers while setting up this form. Please refresh the page and try again"
@@ -112,13 +113,14 @@ export default function EditForm({ login }) {
       setIsFetchingTypes(false);
     }
   };
-  const postCustomer = async () => {
+  const patchCustomer = async () => {
     try {
-      await axios.post(customersApiUrl, {
+      await axios.patch(`${customersApiUrl}/${id}`, {
         name: nameInput.value,
         typeId: currentType,
         contractDate: contractDateInput.value,
         creditLimit: creditLimitInput.value,
+        isActive,
       });
       setIsPatchingCustomer(false);
       Cookies.set("wasOperationSuccess", true);
@@ -134,8 +136,11 @@ export default function EditForm({ login }) {
     if (isFetchingTypes) {
       fetchTypes();
     }
+    if (isFetchingCustomer) {
+      fetchCustomer();
+    }
     if (isPatchingCustomer) {
-      postCustomer();
+      patchCustomer();
     }
   }, [isPatchingCustomer]);
   const onSubmitHandler = (e) => {
@@ -190,7 +195,7 @@ export default function EditForm({ login }) {
   if (isEverythingDone) {
     return <Navigate to="/" replace />;
   }
-  if (isFetchingTypes) {
+  if (isFetchingTypes || isFetchingCustomer) {
     return (
       <CenterContainer bgColor="#FCEFF9">
         <CircularProgress />
@@ -296,6 +301,7 @@ export default function EditForm({ login }) {
           <FormControlLabel
             control={
               <Checkbox
+                checked={isActive}
                 value={isActive}
                 onChange={onCheckboxChange}
                 inputProps={{ "aria-label": "controlled" }}
